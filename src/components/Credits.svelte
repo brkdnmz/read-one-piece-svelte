@@ -6,5 +6,14 @@
     class="underline"
   >
     mangabolt.com
-  </a>)
+  </a>{" "}
+  (en) and{" "}
+  <a
+    href="https://www.mangadenizi.net/manga/one-piece"
+    target="_blank"
+    class="underline"
+  >
+    mangadenizi.net
+  </a>{" "}
+  (tr))
 </div>
