@@ -8,7 +8,7 @@ const config = {
   kit: {
     adapter: adapter({ strict: false }),
     paths: {
-      base: "/read-one-piece",
+      base: "/read-one-piece-svelte",
       relative: false,
     },
   },
