@@ -2,9 +2,7 @@
   import ChapterText from "$lib/assets/chapter-text-2.png";
   import PageText from "$lib/assets/page-text-2.png";
   import ChapterSelector from "./ChapterSelector.svelte";
-  import Credits from "./Credits.svelte";
   import LangSwitcher from "./LangSwitcher.svelte";
-  import NavigationDescription from "./NavigationDescription.svelte";
   import NextChapterButton from "./NextChapterButton.svelte";
   import PageTracker from "./PageTracker.svelte";
   import PrevChapterButton from "./PrevChapterButton.svelte";
@@ -14,7 +12,7 @@
 <!-- Gap for "Go to..." button -->
 <div class="grid gap-8">
   <div
-    class="flex items-stretch justify-center gap-3 font-[One_Piece] select-none"
+    class="flex items-stretch justify-center gap-3 pb-5 font-[One_Piece] select-none"
   >
     <div class="flex items-center gap-2">
       <!-- "Chapter" text in One Piece style -->
@@ -41,11 +39,5 @@
 
       <LangSwitcher />
     </div>
-  </div>
-
-  <div>
-    <NavigationDescription />
-
-    <Credits />
   </div>
 </div>

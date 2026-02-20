@@ -10,7 +10,7 @@
 
   $effect(() => {
     const onVisualViewportChange = () => {
-      if(!window) return;
+      if (!window) return;
       const vv = window.visualViewport;
       if (!vv) return;
       if (!divEl) return;
@@ -50,7 +50,7 @@
 >
   <svg
     viewBox="0 0 24 24"
-    class="absolute h-full w-full fill-destructive-foreground stroke-black stroke-[0.5]"
+    class="absolute h-full w-full fill-rose-600 stroke-black stroke-[0.5]"
     data-tsd-source="/src/components/swiping-blocked.tsx:47:7"
     xmlns="http://www.w3.org/2000/svg"
   >

@@ -4,6 +4,7 @@
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
   import { ModeWatcher } from "mode-watcher";
   import { register } from "swiper/element/bundle";
+  import Footer from "../components/Footer.svelte";
   import Header from "../components/Header.svelte";
   import Subheader from "../components/Subheader.svelte";
   import SwipingBlocked from "../components/SwipingBlocked.svelte";
@@ -39,6 +40,7 @@
       <main class="flex-1">
         {@render children()}
       </main>
+      <Footer />
     </div>
     <SwipingBlocked />
   </QueryClientProvider>

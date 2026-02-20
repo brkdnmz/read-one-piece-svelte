@@ -1,5 +1,5 @@
 <div class="text-center text-2xs text-muted-foreground italic">
-  (Data obtained from{" "}
+  Data obtained from{" "}
   <a
     href="https://mangabolt.com/manga/one-piece/"
     target="_blank"
@@ -15,5 +15,5 @@
   >
     mangadenizi.net
   </a>{" "}
-  (tr))
+  (tr)
 </div>
