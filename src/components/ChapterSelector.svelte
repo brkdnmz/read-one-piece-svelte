@@ -3,16 +3,19 @@
     NativeSelect,
     NativeSelectOption,
   } from "$lib/components/ui/native-select";
-  import { N_CHAPTERS } from "../constants";
+  import { useChapterCount } from "../hooks/use-chapter-count.svelte";
   import { useSearchParams } from "../hooks/use-search-params.svelte";
   import GoToChapter from "./GoToChapter.svelte";
 
   const searchParams = useSearchParams();
+  const chapterCount = useChapterCount();
 
-  const options = Array.from({ length: N_CHAPTERS }).map((_, i) => ({
-    value: i + 1,
-    label: i + 1,
-  }));
+  const options = $derived(
+    Array.from({ length: chapterCount.current }).map((_, i) => ({
+      value: i + 1,
+      label: i + 1,
+    })),
+  );
 </script>
 
 <div class="relative">

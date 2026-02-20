@@ -15,10 +15,11 @@
     InputGroupInput,
   } from "$lib/components/ui/input-group";
   import type { EventHandler } from "svelte/elements";
-  import { N_CHAPTERS } from "../constants";
+  import { useChapterCount } from "../hooks/use-chapter-count.svelte";
   import { useSearchParams } from "../hooks/use-search-params.svelte";
 
   const searchParams = useSearchParams();
+  const chapterCount = useChapterCount();
   let isDialogOpen = $state(false);
   let newChapterInput = $state(searchParams.chapter.toString());
 
@@ -31,7 +32,7 @@
     e.preventDefault();
     if (!newChapterInput) return;
     const newChapter = Number(newChapterInput);
-    if (newChapter >= 1 && newChapter <= N_CHAPTERS) {
+    if (newChapter >= 1 && newChapter <= chapterCount.current) {
       searchParams.chapter = newChapter;
       searchParams.page = 1;
       isDialogOpen = false;
@@ -58,12 +59,12 @@
       </Button>
     {/snippet}
   </DialogTrigger>
-  <DialogContent aria-describedby={undefined} autofocus>
+  <DialogContent aria-describedby={undefined}>
     <DialogTitle>Go to...</DialogTitle>
     <form onsubmit={onSubmit}>
       <Field>
         <FieldLabel for="new-chapter-input">
-          Chapter (1 - {N_CHAPTERS})
+          Chapter (1 - {chapterCount.current})
         </FieldLabel>
         <InputGroup>
           <InputGroupInput

@@ -6,7 +6,6 @@ export function useChapterPageCounQuery(chapter: number) {
     queryKey: ["chapter-page-count", chapter],
     queryFn: async () => {
       const cnt = await getChapterPageCount(chapter);
-      console.log(cnt);
 
       return cnt;
     },
