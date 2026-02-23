@@ -88,7 +88,7 @@
     `,
     ]}
     class="h-full"
-    onswiperslidechange={onSlideChange}
+    onswipertransitionend={onSlideChange}
   >
     {#each { length: pageCount } as _, pageIndex (pageIndex)}
       <swiper-slide lazy>
