@@ -27,7 +27,7 @@
     onSlideNextLastPage,
   }: Props = $props();
 
-  let swiperEl: SwiperContainer | null = null;
+  let swiperEl = $state<SwiperContainer>(); // should have been a state all this time
   const pageCountQuery = $derived(useChapterPageCounQuery(chapter));
   const canSwipe = useCanSwipe();
 
@@ -69,7 +69,8 @@
     swiperEl.swiper.allowTouchMove = canSwipe.current;
   });
 
-  $effect(() => {
+  // Run before DOM rerender (Swiper) to prevent Swiper from interfering, when a chapter has fewer pages than the previous
+  $effect.pre(() => {
     swiperEl?.swiper.slideTo(currentPage - 1);
   });
 </script>
