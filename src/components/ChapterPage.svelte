@@ -2,10 +2,10 @@
   import { cn } from "$lib/utils";
   import { DragGesture } from "@use-gesture/vanilla";
   import { getChapterPageUrl } from "../api/util";
+  import { getPreferredZoomLevel } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
 
   const DOUBLE_TAP_THRESHOLD = 300;
-  const SCALE_FACTOR = 2;
 
   type Props = {
     chapter: number;
@@ -23,6 +23,8 @@
   let imgContainer = $state<HTMLDivElement>();
   let imgElement = $state<HTMLImageElement>();
   let lastTap = 0;
+
+  const zoomLevel = $derived(getPreferredZoomLevel());
 
   const onClickImage = (event: MouseEvent) => {
     const now = Date.now();
@@ -43,8 +45,8 @@
 
       const imgContainerRect = imgContainer.getBoundingClientRect();
 
-      const prevImgHeight = imgContainer.scrollHeight / SCALE_FACTOR;
-      const prevImgWidth = imgContainer.scrollWidth / SCALE_FACTOR;
+      const prevImgHeight = imgContainer.scrollHeight / zoomLevel;
+      const prevImgWidth = imgContainer.scrollWidth / zoomLevel;
 
       const leftDiff = (imgContainerRect.width - prevImgWidth) / 2;
       const topDiff = (imgContainerRect.height - prevImgHeight) / 2;
@@ -55,7 +57,7 @@
           leftDiff,
         top:
           (doubleTapPos[1] - (imgContainerRect.top + topDiff)) *
-            (SCALE_FACTOR - 1) -
+            (zoomLevel - 1) -
           topDiff,
         behavior: "instant",
       });
@@ -73,8 +75,8 @@
         imgContainer.clientWidth / imgContainer.clientHeight;
 
       scale = {
-        width: SCALE_FACTOR / Math.max(1, containerRatio / imgRealRatio),
-        height: SCALE_FACTOR / Math.max(1, imgRealRatio / containerRatio),
+        width: zoomLevel / Math.max(1, containerRatio / imgRealRatio),
+        height: zoomLevel / Math.max(1, imgRealRatio / containerRatio),
       };
     };
 

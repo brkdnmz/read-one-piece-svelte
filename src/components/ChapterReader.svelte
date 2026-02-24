@@ -1,6 +1,7 @@
 <script lang="ts">
   import OnePieceGun from "$lib/assets/one-piece-gun.png";
   import { getMaxPagesForChapter } from "$lib/utils";
+  import { fade } from "svelte/transition";
   import type { SwiperContainer } from "swiper/element";
   import type { Swiper } from "swiper/types";
   import { useCanSwipe } from "../hooks/use-can-swipe.svelte";
@@ -8,6 +9,7 @@
   import { appStore } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
   import ChapterPage from "./ChapterPage.svelte";
+  import ZoomLevelChanger from "./ZoomLevelChanger.svelte";
 
   type Props = {
     chapter: number;
@@ -76,6 +78,15 @@
 </script>
 
 <div class="relative h-full">
+  {#if appStore.isZoomedIn}
+    <div
+      class="absolute inset-x-0 top-2.5 z-20 flex justify-center"
+      transition:fade={{ duration: 200 }}
+    >
+      <ZoomLevelChanger />
+    </div>
+  {/if}
+
   <swiper-container
     bind:this={swiperEl}
     initialSlide={currentPage - 1}
