@@ -1,6 +1,7 @@
 <script lang="ts">
   import { cn } from "$lib/utils";
   import { DragGesture } from "@use-gesture/vanilla";
+  import { isMobile } from "mobile-device-detect";
   import { getChapterPageUrl } from "../api/util";
   import { getPreferredZoomLevel } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
@@ -101,7 +102,7 @@
         });
       },
       {
-        enabled: isZoomedIn,
+        enabled: !isMobile && isZoomedIn,
       },
     );
 
