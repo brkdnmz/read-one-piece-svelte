@@ -8,6 +8,7 @@
   import Header from "../components/Header.svelte";
   import Subheader from "../components/Subheader.svelte";
   import SwipingBlocked from "../components/SwipingBlocked.svelte";
+  import ToggleFullScreen from "../components/ToggleFullScreen.svelte";
   import "../layout.css";
 
   let { children } = $props();
@@ -42,6 +43,7 @@
       </main>
       <Footer />
     </div>
+    <ToggleFullScreen />
     <SwipingBlocked />
   </QueryClientProvider>
 {/if}
