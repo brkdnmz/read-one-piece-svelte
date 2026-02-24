@@ -18,14 +18,17 @@
 
   let isZoomedIn = $state(false);
   let doubleTapPos = $state<[x: number, y: number]>([0, 0]);
+  let scale = $state({ width: 1, height: 1 });
 
-  let imgContainer: HTMLDivElement | null = null;
+  let imgContainer = $state<HTMLDivElement>();
+  let imgElement = $state<HTMLImageElement>();
   let lastTap = 0;
 
   const onClickImage = (event: MouseEvent) => {
     const now = Date.now();
     if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
       isZoomedIn = !isZoomedIn;
+      onZoomChange?.(isZoomedIn);
       doubleTapPos = [event.clientX, event.clientY];
       lastTap = 0; // Triple tap should not equal zoom in + out
     } else {
@@ -33,23 +36,55 @@
     }
   };
 
-  // Probably dont need effect for this but anyways
   $effect(() => {
-    onZoomChange?.(isZoomedIn);
+    if (isZoomedIn) {
+      if (!imgContainer) return;
+      if (scale.width === 1 && scale.height === 1) return;
+
+      const imgContainerRect = imgContainer.getBoundingClientRect();
+
+      const prevImgHeight = imgContainer.scrollHeight / SCALE_FACTOR;
+      const prevImgWidth = imgContainer.scrollWidth / SCALE_FACTOR;
+
+      const leftDiff = (imgContainerRect.width - prevImgWidth) / 2;
+      const topDiff = (imgContainerRect.height - prevImgHeight) / 2;
+
+      imgContainer.scrollTo({
+        left:
+          (doubleTapPos[0] - imgContainerRect.left) * (scale.width - 1) -
+          leftDiff,
+        top:
+          (doubleTapPos[1] - (imgContainerRect.top + topDiff)) *
+            (SCALE_FACTOR - 1) -
+          topDiff,
+        behavior: "instant",
+      });
+    }
   });
 
   $effect(() => {
     if (!isZoomedIn) return;
-    if (!imgContainer) return;
 
-    const imgContainerRect = imgContainer.getBoundingClientRect();
+    const updateScale = () => {
+      if (!imgElement || !imgContainer) return;
 
-    // Scroll to where the user double tapped
-    imgContainer.scrollTo({
-      left: doubleTapPos[0] - imgContainerRect.left,
-      top: doubleTapPos[1] - imgContainerRect.top,
-      behavior: "instant",
-    });
+      const imgRealRatio = imgElement.naturalWidth / imgElement.naturalHeight;
+      const containerRatio =
+        imgContainer.clientWidth / imgContainer.clientHeight;
+
+      scale = {
+        width: SCALE_FACTOR / Math.max(1, containerRatio / imgRealRatio),
+        height: SCALE_FACTOR / Math.max(1, imgRealRatio / containerRatio),
+      };
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(imgContainer!);
+    return () => {
+      observer.disconnect();
+    };
   });
 
   $effect(() => {
@@ -79,18 +114,19 @@
   <div
     bind:this={imgContainer}
     class={cn(
-      "h-full overflow-auto max-sm:w-full",
+      "flex h-full w-full overflow-auto",
       isZoomedIn && "cursor-move overscroll-none", // disable pull-to-refresh when zoomed in
     )}
     onclick={onClickImage}
   >
     {#key `chapter-${chapter}-page-${page}-${lang}`}
       <img
+        bind:this={imgElement}
         src={getChapterPageUrl(chapter, page, lang)}
         alt={`Chapter ${chapter} Page ${page}`}
         class="m-auto h-0 min-h-full object-contain"
-        style:min-height={isZoomedIn ? `${SCALE_FACTOR * 100}%` : undefined}
-        style:min-width={isZoomedIn ? `${SCALE_FACTOR * 100}%` : undefined}
+        style:min-height={isZoomedIn ? `${scale.height * 100}%` : undefined}
+        style:min-width={isZoomedIn ? `${scale.width * 100}%` : undefined}
         loading="lazy"
         draggable={false}
       />
