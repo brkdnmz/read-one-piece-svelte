@@ -44,7 +44,7 @@
 <div
   bind:this={divEl}
   class={cn(
-    "pointer-events-none fixed z-10 aspect-square rounded-full opacity-0 transition-opacity duration-250",
+    "pointer-events-none fixed z-1000 aspect-square rounded-full opacity-0 transition-opacity duration-250",
     !canSwipe.current && "opacity-100",
   )}
 >
