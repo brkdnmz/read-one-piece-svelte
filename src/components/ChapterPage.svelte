@@ -53,7 +53,8 @@
 
       imgContainer.scrollTo({
         left:
-          (doubleTapPos[0] - imgContainerRect.left) * (scale.width - 1) -
+          (doubleTapPos[0] - (imgContainerRect.left + leftDiff)) *
+            (zoomLevel - 1) -
           leftDiff,
         top:
           (doubleTapPos[1] - (imgContainerRect.top + topDiff)) *
