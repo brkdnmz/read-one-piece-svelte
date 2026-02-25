@@ -37,6 +37,14 @@
     pageCountQuery.data ?? getMaxPagesForChapter(chapter),
   );
 
+  let isPageZoomedIn = $state<boolean[]>([]);
+
+  $effect(() => {
+    isPageZoomedIn = Array<boolean>(pageCount).fill(false);
+  });
+
+  const isAnyPageZoomedIn = $derived(isPageZoomedIn.some(Boolean));
+
   const onSlidePrevPage = () => {
     if (currentPage > 1) {
       swiperEl?.swiper.slidePrev();
@@ -49,7 +57,7 @@
   };
 
   const onSlideNextPage = () => {
-    const isLastPage = currentPage === pageCountQuery.data;
+    const isLastPage = currentPage === pageCount;
 
     if (!isLastPage) {
       swiperEl?.swiper.slideNext();
@@ -60,11 +68,19 @@
     }
   };
 
-  const onSlideChange = ({
+  const onSlideChange = () => {
+    isPageZoomedIn = Array<boolean>(pageCount).fill(false);
+  };
+
+  const onTransitionEnd = ({
     detail: [swiper],
   }: CustomEvent<[swiper: Swiper]>) => {
     swiperProps?.onSlideChange?.(swiper.activeIndex);
   };
+
+  $effect(() => {
+    appStore.isZoomedIn = isAnyPageZoomedIn;
+  });
 
   $effect(() => {
     if (!swiperEl) return;
@@ -100,7 +116,8 @@
     `,
     ]}
     class="h-full"
-    onswipertransitionend={onSlideChange}
+    onswiperslidechange={onSlideChange}
+    onswipertransitionend={onTransitionEnd}
   >
     {#each { length: pageCount } as _, pageIndex (pageIndex)}
       <swiper-slide lazy>
@@ -108,9 +125,7 @@
           {chapter}
           page={pageIndex + 1}
           {lang}
-          onZoomChange={(isZoomedIn) => {
-            appStore.isZoomedIn = isZoomedIn;
-          }}
+          bind:isZoomedIn={isPageZoomedIn[pageIndex]}
         />
       </swiper-slide>
     {/each}

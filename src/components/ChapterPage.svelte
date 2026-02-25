@@ -12,12 +12,11 @@
     chapter: number;
     page: number;
     lang: MangaLanguage;
-    onZoomChange?: (isZoomedIn: boolean) => void;
+    isZoomedIn?: boolean;
   };
 
-  const { chapter, page, lang, onZoomChange }: Props = $props();
+  let { chapter, page, lang, isZoomedIn = $bindable() }: Props = $props();
 
-  let isZoomedIn = $state(false);
   let doubleTapPos = $state<[x: number, y: number]>([0, 0]);
   let scale = $state({ width: 1, height: 1 });
 
@@ -31,7 +30,6 @@
     const now = Date.now();
     if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
       isZoomedIn = !isZoomedIn;
-      onZoomChange?.(isZoomedIn);
       doubleTapPos = [event.clientX, event.clientY];
       lastTap = 0; // Triple tap should not equal zoom in + out
     } else {
