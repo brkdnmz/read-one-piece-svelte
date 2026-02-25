@@ -45,6 +45,10 @@
 
   const isAnyPageZoomedIn = $derived(isPageZoomedIn.some(Boolean));
 
+  const resetZoom = () => {
+    isPageZoomedIn = Array<boolean>(pageCount).fill(false);
+  };
+
   const onSlidePrevPage = () => {
     if (currentPage > 1) {
       swiperEl?.swiper.slidePrev();
@@ -69,7 +73,7 @@
   };
 
   const onSlideChange = () => {
-    isPageZoomedIn = Array<boolean>(pageCount).fill(false);
+    resetZoom();
   };
 
   const onTransitionEnd = ({
@@ -77,6 +81,13 @@
   }: CustomEvent<[swiper: Swiper]>) => {
     swiperProps?.onSlideChange?.(swiper.activeIndex);
   };
+
+  // onSlideChange already handles page change, only need to manually handle chapter change
+  // onSlideChange is required, as page change occcurs AFTER transition end
+  $effect(() => {
+    chapter;
+    resetZoom();
+  });
 
   $effect(() => {
     appStore.isZoomedIn = isAnyPageZoomedIn;
