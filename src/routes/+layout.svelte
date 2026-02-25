@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser, dev } from "$app/environment";
   import favicon from "$lib/assets/straw-hats-jolly-roger.png";
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
   import { ModeWatcher } from "mode-watcher";
@@ -25,7 +25,7 @@
 </script>
 
 <svelte:head>
-  <title>Read One Piece</title>
+  <title>Read One Piece{dev ? " (Dev)" : ""}</title>
   <link rel="icon" href={favicon} />
 </svelte:head>
 
