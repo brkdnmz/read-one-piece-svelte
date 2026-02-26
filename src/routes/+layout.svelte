@@ -34,7 +34,6 @@
 <!-- https://github.com/sveltejs/kit/discussions/6564 -->
 {#if browser}
   <QueryClientProvider client={queryClient}>
-    <!-- Patched to not set html style color-scheme -->
     <div class="flex h-svh flex-col gap-3">
       <Header />
       <Subheader />

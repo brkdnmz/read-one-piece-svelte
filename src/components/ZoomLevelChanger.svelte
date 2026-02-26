@@ -6,7 +6,7 @@
 
 <Button
   variant="outline"
-  class="aspect-square size-8! rounded-full border-slate-600! bg-background/40! p-2 text-2xs"
+  class="aspect-square! rounded-full bg-background/50! p-0 text-2xs"
   onclick={() => {
     appStore.preferredZoomLevelIndex =
       (appStore.preferredZoomLevelIndex + 1) % AVAILABLE_ZOOM_LEVELS.length;

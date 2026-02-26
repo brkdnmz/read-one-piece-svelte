@@ -1,7 +1,7 @@
 <script lang="ts">
   import OnePieceGun from "$lib/assets/one-piece-gun.png";
-  import { getMaxPagesForChapter } from "$lib/utils";
-  import { fade } from "svelte/transition";
+  import { cn, getMaxPagesForChapter } from "$lib/utils";
+  import { fly } from "svelte/transition";
   import type { SwiperContainer } from "swiper/element";
   import type { Swiper } from "swiper/types";
   import { useCanSwipe } from "../hooks/use-can-swipe.svelte";
@@ -9,6 +9,7 @@
   import { appStore } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
   import ChapterPage from "./ChapterPage.svelte";
+  import FullScreenOverlay from "./FullScreenOverlay.svelte";
   import ZoomLevelChanger from "./ZoomLevelChanger.svelte";
 
   type Props = {
@@ -104,47 +105,64 @@
   });
 </script>
 
-<div class="relative h-full">
+<div
+  class={cn(
+    "relative h-full overflow-hidden",
+    appStore.isFullScreen && "absolute inset-0 z-100 bg-background",
+  )}
+>
+  {#if appStore.isFullScreen}
+    <FullScreenOverlay />
+  {/if}
+
   {#if appStore.isZoomedIn}
     <div
-      class="absolute inset-x-0 top-2.5 z-20 flex justify-center"
-      transition:fade={{ duration: 200 }}
+      class="pointer-events-none absolute top-2.5 left-1/2 z-20 flex -translate-x-1/2 justify-center *:pointer-events-auto"
+      transition:fly={{ y: "-100%", duration: 200 }}
     >
       <ZoomLevelChanger />
     </div>
   {/if}
 
-  <swiper-container
-    bind:this={swiperEl}
-    initialSlide={currentPage - 1}
-    keyboard
-    lazyPreloadPrevNext="2"
-    injectStyles={[
-      `
+  <!-- Swiper Element doesn't update virtual slides on props change, I checked the code -->
+  <!-- So, I have to change the key to force remount -->
+  {#key `${chapter}-${pageCount}`}
+    <swiper-container
+      bind:this={swiperEl}
+      initialSlide={currentPage - 1}
+      keyboard
+      virtual={{
+        // Virtual is a must for iOS apparently, otherwise the performance sucks
+        enabled: true,
+      }}
+      injectStyles={[
+        `
     .swiper-wrapper {
       will-change: transform;
     }
     `,
-    ]}
-    class="h-full"
-    onswiperslidechange={onSlideChange}
-    onswipertransitionend={onTransitionEnd}
-  >
-    {#each { length: pageCount } as _, pageIndex (pageIndex)}
-      <swiper-slide lazy>
-        <ChapterPage
-          {chapter}
-          page={pageIndex + 1}
-          {lang}
-          bind:isZoomedIn={isPageZoomedIn[pageIndex]}
-        />
-      </swiper-slide>
-    {/each}
-  </swiper-container>
+      ]}
+      class="h-full"
+      onswiperslidechange={onSlideChange}
+      onswipertransitionend={onTransitionEnd}
+    >
+      {#each { length: pageCount } as _, pageIndex (pageIndex)}
+        <!-- Lazy + virtual causes a silly bug (preloader gets stuck) -->
+        <swiper-slide lazy={false}>
+          <ChapterPage
+            {chapter}
+            page={pageIndex + 1}
+            {lang}
+            bind:isZoomedIn={isPageZoomedIn[pageIndex]}
+          />
+        </swiper-slide>
+      {/each}
+    </swiper-container>
+  {/key}
 
   <!-- Slide prev -->
   <button
-    class="absolute inset-y-0 left-0 z-10 flex w-[10vw] items-center justify-center bg-foreground/5 opacity-0 transition-opacity select-none hover:opacity-100"
+    class="absolute inset-y-0 left-0 z-10 flex w-[10vw] items-center justify-center bg-muted/50 opacity-0 transition-opacity select-none hover:opacity-100"
     onclick={onSlidePrevPage}
   >
     <img src={OnePieceGun} class="w-1/2" alt="Slide prev" />
@@ -152,7 +170,7 @@
 
   <!-- Slide next -->
   <button
-    class="absolute inset-y-0 right-0 z-10 flex w-[10vw] items-center justify-center bg-foreground/5 opacity-0 transition-opacity select-none hover:opacity-100"
+    class="absolute inset-y-0 right-0 z-10 flex w-[10vw] items-center justify-center bg-muted/50 opacity-0 transition-opacity select-none hover:opacity-100"
     onclick={onSlideNextPage}
   >
     <img src={OnePieceGun} class="w-1/2 rotate-y-180" alt="Slide next" />
