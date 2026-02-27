@@ -8,18 +8,19 @@
   const pageCount = $derived(useChapterPageCounQuery(searchParams.chapter));
 </script>
 
-<div class="flex items-center text-sm transition">
+<div class="flex items-center text-sm">
   <PageSelector
     currentPage={searchParams.page}
     nPages={pageCount.data ?? getMaxPagesForChapter(searchParams.chapter)}
     onChoosePage={(page) => (searchParams.page = page)}
   />
-  /
-  <span class="w-[2ch]">
-    {#if pageCount.data}
-      {pageCount.data}
-    {:else}
-      <span class="animate-pulse text-slate-400">...</span>
-    {/if}
+  <span class="transition">
+    /<span class="w-[2ch]">
+      {#if pageCount.data}
+        {pageCount.data}
+      {:else}
+        <span class="animate-pulse text-slate-400">...</span>
+      {/if}
+    </span>
   </span>
 </div>
