@@ -1,4 +1,5 @@
 <script>
+  import FrankySuper from "$lib/assets/franky-super.png";
   import RobinChopper from "$lib/assets/robin-chopper.webp";
   import ThousandSunny from "$lib/assets/thousand-sunny.png";
   import { Button } from "$lib/components/ui/button";
@@ -31,13 +32,16 @@
         {...props}
         variant="outline"
         size="icon"
-        class="p-0.5 text-muted-foreground"
+        class="group p-0.5 text-muted-foreground"
         title="About"
       >
         <img
           src={ThousandSunny}
           alt="Thousand Sunny Logo"
-          class={cn(!appStore.aboutReadBefore.current && "about-not-read")}
+          class={cn(
+            "transition group-active:scale-85 group-active:transition-none",
+            !appStore.aboutReadBefore.current && "about-not-read",
+          )}
         />
       </Button>
     {/snippet}
@@ -45,9 +49,15 @@
   <DialogContent showCloseButton={false}>
     <DialogHeader>
       <DialogTitle class="text-center font-[Anime_Ace]">About</DialogTitle>
-      <DialogDescription
-        >Hope you have <span class="font-[Anime_Ace]">SUPER!!!</span> fun!</DialogDescription
-      >
+      <DialogDescription class="italic">
+        Hope you have <span class="font-[Anime_Ace]">SUUUUPER</span>
+        <img
+          src={FrankySuper}
+          alt="Franky Super Pose"
+          class="inline h-6 align-baseline"
+        />
+        fun!
+      </DialogDescription>
     </DialogHeader>
 
     <div class="max-h-[50vh] overflow-auto">
