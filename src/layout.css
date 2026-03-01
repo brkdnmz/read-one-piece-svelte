@@ -1,3 +1,4 @@
+@import url("https://fonts.cdnfonts.com/css/anime-ace");
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@iconify/tailwind4";
@@ -136,6 +137,10 @@
   button:not([disabled]),
   [role="button"]:not([disabled]) {
     cursor: pointer;
+  }
+
+  ul {
+    @apply list-disc pl-4;
   }
 }
 

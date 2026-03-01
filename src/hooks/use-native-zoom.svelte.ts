@@ -7,8 +7,9 @@ export function useNativeZoom() {
 
   $effect.pre(() => {
     const onResize = () => {
-      if (!window.visualViewport) return;
-      const scale = window.visualViewport.scale;
+      if (!visualViewport) return;
+      const scale = window.outerWidth / visualViewport.width; // visualViewport.scale is unreliable on iOS unfortunately, tested
+
       isZoomedIn.current = scale > ZOOM_THRESHOLD;
     };
 

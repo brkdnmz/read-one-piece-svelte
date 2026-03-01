@@ -14,6 +14,17 @@
   };
 </script>
 
+<svelte:window
+  on:keydown={(e) => {
+    if (e.key.toLowerCase() === "f") {
+      appStore.isFullScreen = !appStore.isFullScreen;
+    }
+    if (e.key === "Escape") {
+      appStore.isFullScreen = false;
+    }
+  }}
+/>
+
 <ChapterReader
   chapter={searchParams.chapter}
   currentPage={searchParams.page}

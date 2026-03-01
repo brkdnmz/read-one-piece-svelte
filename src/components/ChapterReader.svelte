@@ -1,15 +1,17 @@
 <script lang="ts">
-  import OnePieceGun from "$lib/assets/one-piece-gun.png";
   import { cn, getMaxPagesForChapter } from "$lib/utils";
   import { fly } from "svelte/transition";
   import type { SwiperContainer } from "swiper/element";
   import type { Swiper } from "swiper/types";
   import { useCanSwipe } from "../hooks/use-can-swipe.svelte";
   import { useChapterPageCounQuery } from "../hooks/use-chapter-page-count-query.svelte";
+  import { useReaderGestures } from "../hooks/use-reader-gestures.svelte";
   import { appStore } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
   import ChapterPage from "./ChapterPage.svelte";
   import FullScreenOverlay from "./FullScreenOverlay.svelte";
+  import PageNavigationButton from "./PageNavigationButton.svelte";
+  import ToggleFullScreen from "./ToggleFullScreen.svelte";
   import ZoomLevelChanger from "./ZoomLevelChanger.svelte";
 
   type Props = {
@@ -39,6 +41,16 @@
   );
 
   let isPageZoomedIn = $state<boolean[]>([]);
+  let showOverlayUI = $state(true);
+
+  $effect(() => {
+    if (!swiperEl) return;
+    useReaderGestures(swiperEl, {
+      onTap: () => {
+        showOverlayUI = !showOverlayUI;
+      },
+    });
+  });
 
   $effect(() => {
     isPageZoomedIn = Array<boolean>(pageCount).fill(false);
@@ -111,17 +123,34 @@
     appStore.isFullScreen && "absolute inset-0 z-100 bg-background",
   )}
 >
-  {#if appStore.isFullScreen}
-    <FullScreenOverlay />
-  {/if}
-
   {#if appStore.isZoomedIn}
     <div
       class="pointer-events-none absolute top-2.5 left-1/2 z-20 flex -translate-x-1/2 justify-center *:pointer-events-auto"
-      transition:fly={{ y: "-100%", duration: 200 }}
+      transition:fly={{ y: "-100%" }}
     >
       <ZoomLevelChanger />
     </div>
+  {/if}
+
+  <!-- When the conditions are in this order, the overlay's out animation doesn't happen, which is what I want -->
+  {#if appStore.isFullScreen}
+    {#if showOverlayUI}
+      <FullScreenOverlay />
+    {/if}
+  {/if}
+
+  {#if showOverlayUI}
+    <PageNavigationButton
+      direction="prev"
+      onclick={onSlidePrevPage}
+      class="peer/prev"
+    />
+    <PageNavigationButton
+      direction="next"
+      onclick={onSlideNextPage}
+      class="peer/next"
+    />
+    <ToggleFullScreen />
   {/if}
 
   <!-- Swiper Element doesn't update virtual slides on props change, I checked the code -->
@@ -142,7 +171,7 @@
     }
     `,
       ]}
-      class="h-full"
+      class="h-full transition peer-hover/next:-translate-x-2 peer-hover/prev:translate-x-2"
       onswiperslidechange={onSlideChange}
       onswipertransitionend={onTransitionEnd}
     >
@@ -159,20 +188,4 @@
       {/each}
     </swiper-container>
   {/key}
-
-  <!-- Slide prev -->
-  <button
-    class="absolute inset-y-0 left-0 z-10 flex w-[10vw] items-center justify-center bg-muted/50 opacity-0 transition-opacity select-none hover:opacity-100"
-    onclick={onSlidePrevPage}
-  >
-    <img src={OnePieceGun} class="w-1/2" alt="Slide prev" />
-  </button>
-
-  <!-- Slide next -->
-  <button
-    class="absolute inset-y-0 right-0 z-10 flex w-[10vw] items-center justify-center bg-muted/50 opacity-0 transition-opacity select-none hover:opacity-100"
-    onclick={onSlideNextPage}
-  >
-    <img src={OnePieceGun} class="w-1/2 rotate-y-180" alt="Slide next" />
-  </button>
 </div>

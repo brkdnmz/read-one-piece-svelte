@@ -115,10 +115,7 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     bind:this={imgContainer}
-    class={cn(
-      "flex h-full w-full overflow-auto",
-      isZoomedIn && "cursor-move overscroll-none", // disable pull-to-refresh when zoomed in
-    )}
+    class={cn("flex h-full w-full overflow-auto", isZoomedIn && "cursor-move")}
     onclick={onClickImage}
   >
     {#key `chapter-${chapter}-page-${page}-${lang}`}

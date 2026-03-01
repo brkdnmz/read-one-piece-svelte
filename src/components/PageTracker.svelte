@@ -15,7 +15,7 @@
     onChoosePage={(page) => (searchParams.page = page)}
   />
   <span class="transition">
-    /<span class="w-[2ch]">
+    /<span class="inline-block w-[2ch]">
       {#if pageCount.data}
         {pageCount.data}
       {:else}

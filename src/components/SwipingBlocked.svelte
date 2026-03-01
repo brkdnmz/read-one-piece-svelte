@@ -21,11 +21,13 @@
       if (!divEl) return;
       if (!svgEl) return;
 
-      const scaledSize = SIZE / vv.scale;
-      const scaledMargin = MARGIN / vv.scale;
-      const scaledBorder = BORDER_WIDTH / vv.scale;
-      const scaledInnerPadding = PADDING / vv.scale;
-      const scaledStrokeWidth = BORDER_WIDTH / vv.scale;
+      const scale = window.outerWidth / vv.width;
+
+      const scaledSize = SIZE / scale;
+      const scaledMargin = MARGIN / scale;
+      const scaledBorder = BORDER_WIDTH / scale;
+      const scaledInnerPadding = PADDING / scale;
+      const scaledStrokeWidth = BORDER_WIDTH / scale;
 
       divEl.style.margin = `${scaledMargin}px`;
       divEl.style.left = `${vv.offsetLeft + vv.width - scaledSize - 2 * scaledMargin}px`;
@@ -58,8 +60,8 @@
 {#if !canSwipe.current}
   <div
     bind:this={divEl}
-    class="pointer-events-none fixed z-1000 overflow-hidden rounded-full border-rose-600 bg-background/50 transition"
-    transition:fly={{ x: "100%", y: "-100%", duration: 200 }}
+    class="pointer-events-none fixed z-100 overflow-hidden rounded-full border-rose-600 bg-background/50 transition"
+    transition:fly={{ x: "100%", y: "-100%" }}
   >
     <svg
       bind:this={svgEl}
