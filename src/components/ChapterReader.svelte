@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cn, getMaxPagesForChapter } from "$lib/utils";
+  import { cn, getMaxPagesForChapter, preloadImage } from "$lib/utils";
   import { fly } from "svelte/transition";
   import type { SwiperContainer } from "swiper/element";
   import type { Swiper } from "swiper/types";
@@ -115,6 +115,21 @@
   $effect.pre(() => {
     swiperEl?.swiper.slideTo(currentPage - 1);
   });
+
+  // Image preloading, what Swiper fails at...
+  $effect(() => {
+    if (!swiperEl) return;
+    chapter;
+    pageCount;
+    currentPage;
+
+    swiperEl.querySelectorAll("swiper-slide").forEach((slideEl) => {
+      const imgEl = slideEl.querySelector("img");
+      const imgSrc = imgEl?.getAttribute("src");
+      if (!imgSrc) return;
+      preloadImage(imgSrc);
+    });
+  });
 </script>
 
 <div
@@ -163,6 +178,8 @@
       virtual={{
         // Virtual is a must for iOS apparently, otherwise the performance sucks
         enabled: true,
+        addSlidesAfter: 1,
+        addSlidesBefore: 1,
       }}
       injectStyles={[
         `

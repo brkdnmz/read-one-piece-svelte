@@ -20,3 +20,7 @@ export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & {
 export function getMaxPagesForChapter(chapter: number) {
   return chapter === 1 ? FIRST_CHAPTER_PAGES : MAX_PAGES_PER_CHAPTER;
 }
+
+export function preloadImage(src: string) {
+  new Image().src = src;
+}
