@@ -3,29 +3,6 @@
   import { cn } from "$lib/utils";
   import { fly } from "svelte/transition";
   import { appStore } from "../store/store.svelte";
-
-  /* Will decide about this later */
-  // $effect(() => {
-  //   if (!document.fullscreenEnabled) return;
-
-  //   if (appStore.isFullScreen) {
-  //     document.body.requestFullscreen?.();
-  //   } else {
-  //     document.exitFullscreen?.();
-  //   }
-  // });
-
-  // $effect(() => {
-  //   const onFullScreenChange = () => {
-  //     if (!document.fullscreenElement) {
-  //       appStore.isFullScreen = false;
-  //     }
-  //   };
-
-  //   window.addEventListener("fullscreenchange", onFullScreenChange);
-  //   return () =>
-  //     window.removeEventListener("fullscreenchange", onFullScreenChange);
-  // });
 </script>
 
 <!-- leading-0 for removing extra height -->

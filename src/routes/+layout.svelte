@@ -5,7 +5,9 @@
   import { ModeWatcher } from "mode-watcher";
   import { register } from "swiper/element/bundle";
   import Footer from "../components/Footer.svelte";
+  import FullScreenManager from "../components/FullScreenManager.svelte";
   import Header from "../components/Header.svelte";
+  import Settings from "../components/Settings.svelte";
   import Subheader from "../components/Subheader.svelte";
   import SwipingBlocked from "../components/SwipingBlocked.svelte";
   import "../layout.css";
@@ -41,6 +43,8 @@
       </main>
       <Footer />
     </div>
+    <Settings />
     <SwipingBlocked />
+    <FullScreenManager />
   </QueryClientProvider>
 {/if}
