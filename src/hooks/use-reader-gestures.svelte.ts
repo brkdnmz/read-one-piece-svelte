@@ -1,4 +1,4 @@
-const DOUBLE_TAP_THRESHOLD_MS = 300;
+import { DOUBLE_TAP_THRESHOLD_MS } from "../constants";
 
 export function useReaderGestures(
   readerContainer: HTMLElement,

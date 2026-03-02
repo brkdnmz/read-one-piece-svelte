@@ -3,10 +3,9 @@
   import { DragGesture } from "@use-gesture/vanilla";
   import { isMobile } from "mobile-device-detect";
   import { getChapterPageUrl } from "../api/util";
+  import { DOUBLE_TAP_THRESHOLD_MS } from "../constants";
   import { getPreferredZoomLevel } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
-
-  const DOUBLE_TAP_THRESHOLD = 300;
 
   type Props = {
     chapter: number;
@@ -28,7 +27,7 @@
 
   const onClickImage = (event: MouseEvent) => {
     const now = Date.now();
-    if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
+    if (now - lastTap < DOUBLE_TAP_THRESHOLD_MS) {
       isZoomedIn = !isZoomedIn;
       doubleTapPos = [event.clientX, event.clientY];
       lastTap = 0; // Triple tap should not equal zoom in + out
