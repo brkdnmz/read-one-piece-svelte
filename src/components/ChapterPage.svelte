@@ -26,10 +26,14 @@
   let imgContainer = $state<HTMLDivElement>();
   let imgElement = $state<HTMLImageElement>();
   let lastTap = 0;
+  let dragged = false;
 
   const zoomLevel = $derived(getPreferredZoomLevel());
 
   const onClickImage = (event: MouseEvent) => {
+    // prevent overlay UI toggle
+    if (dragged) event.stopPropagation();
+
     const now = Date.now();
     if (now - lastTap < DOUBLE_TAP_THRESHOLD_MS) {
       onDoubleClickImage(event);
@@ -115,7 +119,10 @@
   $effect(() => {
     const gesture = new DragGesture(
       imgContainer!,
-      ({ delta: [dx, dy] }) => {
+      ({ delta: [dx, dy], tap }) => {
+        // stopPropagation won't work here because of Svelte's event system: https://svelte.dev/docs/svelte/basic-markup#Events-Event-delegation
+        // so I have to manually check if dragged, and then handle it in onClickImage above
+        dragged = !tap;
         imgContainer?.scrollBy({
           left: -dx,
           top: -dy,
@@ -125,6 +132,7 @@
       },
       {
         enabled: !isMobile && isZoomedIn,
+        filterTaps: true,
       },
     );
 

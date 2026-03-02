@@ -1,3 +1,4 @@
+import { on } from "svelte/events";
 import { DOUBLE_TAP_THRESHOLD_MS } from "../constants";
 
 export function useReaderGestures(
@@ -22,10 +23,7 @@ export function useReaderGestures(
       }
     };
 
-    readerContainer.addEventListener("click", onClick);
-
-    return () => {
-      readerContainer.removeEventListener("click", onClick);
-    };
+    // have to use Svelte's on() in order for stopPropagation of children to work: https://svelte.dev/docs/svelte/basic-markup#Events-Event-delegation
+    return on(readerContainer, "click", onClick);
   });
 }
