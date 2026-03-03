@@ -11,10 +11,9 @@
 
 <div class="flex items-center text-sm">
   <PageSelector
-    currentPage={searchParams.page}
+    bind:currentPage={searchParams.page}
     nPages={pageCount.data?.[appStore.mangaLanguage] ??
       getMaxPagesForChapter(searchParams.chapter)}
-    onChoosePage={(page) => (searchParams.page = page)}
   />
   <span class="transition">
     /<span class="inline-block w-[2ch]">
