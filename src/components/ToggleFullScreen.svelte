@@ -18,7 +18,7 @@
       e.stopPropagation();
     }}
     title={!appStore.isFullScreen ? "Enter full screen" : "Exit full screen"}
-    class="bg-background/50! transition duration-100 *:size-1/2 active:scale-85"
+    class="bg-background/50! transition-[scale_100ms] *:size-1/2 active:scale-85"
   >
     <span
       class={cn(
