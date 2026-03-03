@@ -4,6 +4,7 @@
   import PageTracker from "./PageTracker.svelte";
 
   const searchParams = useSearchParams();
+  const { chapter } = $derived(searchParams);
 </script>
 
 <!-- bottom-2.5 - (bottom padding) = bottom-2 -->
@@ -12,7 +13,7 @@
   transition:fly={{ y: "100%" }}
 >
   <div class="flex items-center gap-1">
-    <span>Chapter {searchParams.chapter}</span>
+    <span>Chapter {chapter}</span>
   </div>
   <PageTracker />
 </div>

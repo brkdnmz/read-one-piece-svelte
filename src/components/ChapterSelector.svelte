@@ -8,6 +8,7 @@
   import GoToChapter from "./GoToChapter.svelte";
 
   const searchParams = useSearchParams();
+  const { chapter } = $derived(searchParams);
   const chapterCount = useChapterCount();
 
   const options = $derived(
@@ -24,11 +25,11 @@
   <span
     class="pointer-events-none absolute top-1/2 left-1/2 z-1 -translate-1/2 text-sm transition"
   >
-    {searchParams.chapter}
+    {chapter}
   </span>
 
   <NativeSelect
-    value={searchParams.chapter}
+    value={chapter}
     onchange={(e) => {
       const selectedChapter = Number(e.currentTarget.value);
       searchParams.chapter = selectedChapter;

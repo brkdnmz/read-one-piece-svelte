@@ -6,14 +6,15 @@
   import PageSelector from "./PageSelector.svelte";
 
   const searchParams = useSearchParams();
-  const pageCount = $derived(useChapterPageCounQuery(searchParams.chapter));
+  const { chapter } = $derived(searchParams);
+  const pageCount = $derived(useChapterPageCounQuery(chapter));
 </script>
 
 <div class="flex items-center text-sm">
   <PageSelector
     bind:currentPage={searchParams.page}
     nPages={pageCount.data?.[appStore.mangaLanguage] ??
-      getMaxPagesForChapter(searchParams.chapter)}
+      getMaxPagesForChapter(chapter)}
   />
   <span class="transition">
     /<span class="inline-block w-[2ch]">
