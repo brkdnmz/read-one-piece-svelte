@@ -11,8 +11,16 @@
     DialogTrigger,
   } from "$lib/components/ui/dialog";
   import Dialog from "$lib/components/ui/dialog/dialog.svelte";
-  import { Field, FieldLabel } from "$lib/components/ui/field";
-  import { appStore } from "../store/store.svelte";
+  import {
+    Field,
+    FieldDescription,
+    FieldGroup,
+    FieldLabel,
+  } from "$lib/components/ui/field";
+  import FieldSeparator from "$lib/components/ui/field/field-separator.svelte";
+  import { NativeSelect } from "$lib/components/ui/native-select";
+  import { preferencesStore } from "../store/preferences.svelte";
+  import { MangaLanguage } from "../types";
 
   const uid = $props.id();
 </script>
@@ -37,27 +45,43 @@
       </div>
     {/snippet}
   </DialogTrigger>
-  <DialogContent>
+  <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
     <DialogHeader>
       <DialogTitle class="text-center font-[Anime_Ace]">Settings</DialogTitle>
     </DialogHeader>
 
-    <div class="max-h-[50vh] overflow-y-auto">
-      <Field orientation="horizontal">
-        <Checkbox
-          id="{uid}-use-fullscreen-api"
-          bind:checked={appStore.useFullscreenApi.current}
-          disabled={!document.fullscreenEnabled}
-        />
-        <FieldLabel for="{uid}-use-fullscreen-api" class="block">
-          Enable browser's full screen mode
-          {#if !document.fullscreenEnabled}
-            <div class="text-muted-foreground italic">
-              (Not supported in your browser)
-            </div>
-          {/if}
-        </FieldLabel>
-      </Field>
+    <div>
+      <FieldGroup>
+        <Field>
+          <FieldLabel>Preferred manga language</FieldLabel>
+          <NativeSelect
+            bind:value={preferencesStore.current.preferredMangaLanguage}
+          >
+            <option value={MangaLanguage.EN}>🇺🇸 English</option>
+            <option value={MangaLanguage.TR}>🇹🇷 Türkçe</option>
+          </NativeSelect>
+          <FieldDescription>
+            One Piece defaults to this language on your further visits.
+            Currently selected language won't be affected.
+          </FieldDescription>
+        </Field>
+        <FieldSeparator />
+        <Field orientation="horizontal">
+          <Checkbox
+            id="{uid}-use-fullscreen-api"
+            bind:checked={preferencesStore.current.useFullscreenApi}
+            disabled={!document.fullscreenEnabled}
+          />
+          <FieldLabel for="{uid}-use-fullscreen-api" class="block">
+            Enable browser's full screen mode
+            {#if !document.fullscreenEnabled}
+              <div class="text-muted-foreground italic">
+                (Not supported in your browser)
+              </div>
+            {/if}
+          </FieldLabel>
+        </Field>
+      </FieldGroup>
     </div>
 
     <DialogFooter>

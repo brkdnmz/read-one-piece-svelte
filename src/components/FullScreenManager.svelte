@@ -1,13 +1,14 @@
 <script lang="ts">
+  import { preferencesStore } from "../store/preferences.svelte";
   import { appStore } from "../store/store.svelte";
 
   $effect(() => {
-    appStore.useFullscreenApi.current;
+    preferencesStore.current.useFullscreenApi;
     appStore.isFullScreen;
 
     if (!document.fullscreenEnabled) return;
 
-    if (appStore.useFullscreenApi.current) {
+    if (preferencesStore.current.useFullscreenApi) {
       if (appStore.isFullScreen) {
         document.body.requestFullscreen?.();
       }
