@@ -104,7 +104,8 @@
         height: zoomLevel / Math.max(1, imgRealRatio / containerRatio),
       };
 
-      recalculateZoomOriginPos();
+      // it's better without it I think
+      // recalculateZoomOriginPos();
     };
 
     updateScale();
