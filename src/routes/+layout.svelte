@@ -10,6 +10,7 @@
   import Settings from "../components/Settings.svelte";
   import Subheader from "../components/Subheader.svelte";
   import SwipingBlocked from "../components/SwipingBlocked.svelte";
+  import { useSearchParams } from "../hooks/use-search-params.svelte";
   import "../layout.css";
 
   let { children } = $props();
@@ -23,10 +24,12 @@
       },
     },
   });
+
+  const { chapter } = $derived(useSearchParams());
 </script>
 
 <svelte:head>
-  <title>Read One Piece{dev ? " (Dev)" : ""}</title>
+  <title>Read One Piece{dev ? " (Dev)" : ""} | Ch. {chapter}</title>
   <link rel="icon" href={favicon} />
 </svelte:head>
 
