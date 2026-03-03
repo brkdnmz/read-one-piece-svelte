@@ -3,6 +3,7 @@ import {
   FIRST_CHAPTER_PAGES,
   MAX_PAGES_PER_CHAPTER,
 } from "../constants";
+import { MangaLanguage } from "../types";
 import { apiClient } from "./client";
 import { getChapterPageUrl } from "./util";
 
@@ -13,27 +14,47 @@ export async function getChapterCount(): Promise<number> {
     .catch(() => ESTIMATED_CHAPTER_COUNT);
 }
 
-export async function getChapterPageCount(chapter: number): Promise<number> {
-  if (chapter === 1) {
+export async function getChapterPageCount(
+  chapter: number,
+  lang: MangaLanguage,
+): Promise<number> {
+  if (chapter === 1 && lang === MangaLanguage.EN) {
     return FIRST_CHAPTER_PAGES;
   }
 
-  let l = 0;
-  let r = MAX_PAGES_PER_CHAPTER - 1;
+  async function pageExists(page: number): Promise<boolean> {
+    const pageUrl = getChapterPageUrl(chapter, page, lang);
+
+    switch (lang) {
+      case MangaLanguage.EN: {
+        const res = await apiClient.head(pageUrl, {
+          validateStatus: () => true,
+        });
+        return res.status !== 404;
+      }
+      case MangaLanguage.TR:
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onerror = () => resolve(false);
+          img.onload = () => resolve(true);
+          img.src = pageUrl;
+        });
+      default:
+        return false;
+    }
+  }
+
+  let l = 1;
+  let r = chapter === 1 ? FIRST_CHAPTER_PAGES : MAX_PAGES_PER_CHAPTER;
 
   while (l < r) {
     const mid = Math.floor((l + r + 1) / 2);
-    const pageUrl = getChapterPageUrl(chapter, mid + 1);
-
-    // I don't want it to throw error for any status code
-    const res = await apiClient.head(pageUrl, { validateStatus: () => true });
-
-    if (res.status === 404) {
+    if (!(await pageExists(mid))) {
       r = mid - 1;
     } else {
       l = mid;
     }
   }
 
-  return l + 1;
+  return l;
 }

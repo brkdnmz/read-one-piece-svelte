@@ -7,7 +7,7 @@
   import { useChapterPageCounQuery } from "../hooks/use-chapter-page-count-query.svelte";
   import { useReaderGestures } from "../hooks/use-reader-gestures.svelte";
   import { appStore } from "../store/store.svelte";
-  import type { MangaLanguage } from "../types";
+  import { MangaLanguage } from "../types";
   import ChapterPage from "./ChapterPage.svelte";
   import FullScreenOverlay from "./FullScreenOverlay.svelte";
   import PageNavigationButton from "./PageNavigationButton.svelte";
@@ -23,7 +23,7 @@
     onSlideNextLastPage?: (swiper: Swiper) => void;
   };
 
-  let {
+  const {
     chapter,
     currentPage = 1,
     lang,
@@ -37,7 +37,7 @@
   const canSwipe = useCanSwipe();
 
   const pageCount = $derived(
-    pageCountQuery.data ?? getMaxPagesForChapter(chapter),
+    pageCountQuery.data?.[lang] ?? getMaxPagesForChapter(chapter),
   );
 
   let isPageZoomedIn = $state<boolean[]>([]);

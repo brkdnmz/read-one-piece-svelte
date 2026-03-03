@@ -7,6 +7,9 @@
   // Applied this patch in node_modules: https://github.com/svecosystem/runed/issues/385
   const searchParams = useSearchParams();
 
+  // even accessing params from searchParams object directly caused unnecessary rerenders, so this is necessary I suppose
+  const { chapter, page } = $derived(searchParams);
+
   const onSlideChange: NonNullable<
     ComponentProps<typeof ChapterReader>["swiperProps"]
   >["onSlideChange"] = (newSlideIndex) => {
@@ -26,8 +29,8 @@
 />
 
 <ChapterReader
-  chapter={searchParams.chapter}
-  currentPage={searchParams.page}
+  {chapter}
+  currentPage={page}
   lang={appStore.mangaLanguage}
   swiperProps={{
     onSlideChange,
