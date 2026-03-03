@@ -1,6 +1,5 @@
 <script lang="ts">
   import { cn, getMaxPagesForChapter, preloadImage } from "$lib/utils";
-  import { fly } from "svelte/transition";
   import type { SwiperContainer } from "swiper/element";
   import type { Swiper } from "swiper/types";
   import { useCanSwipe } from "../hooks/use-can-swipe.svelte";
@@ -139,12 +138,7 @@
   )}
 >
   {#if appStore.isZoomedIn}
-    <div
-      class="pointer-events-none absolute top-2.5 left-1/2 z-20 flex -translate-x-1/2 justify-center *:pointer-events-auto"
-      transition:fly={{ y: "-100%" }}
-    >
-      <ZoomLevelChanger />
-    </div>
+    <ZoomLevelChanger />
   {/if}
 
   <!-- When the conditions are in this order, the overlay's out animation doesn't happen, which is what I want -->

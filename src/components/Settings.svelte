@@ -20,19 +20,21 @@
 <Dialog>
   <DialogTrigger>
     {#snippet child({ props })}
-      <Button
-        {...props}
-        variant="outline"
-        size="icon"
-        class="group fixed top-2.5 left-2.5 p-0.5 text-muted-foreground"
-        title="Settings"
-      >
-        <img
-          src={ShipWheel}
-          alt="Ship Wheel"
-          class="transition group-active:-rotate-z-360 group-active:transition-none"
-        />
-      </Button>
+      <div class="fixed top-0 left-0 p-2.5 leading-0">
+        <Button
+          {...props}
+          variant="outline"
+          size="icon"
+          class="group p-0.5 text-muted-foreground after:absolute after:inset-0"
+          title="Settings"
+        >
+          <img
+            src={ShipWheel}
+            alt="Ship Wheel"
+            class="transition group-active:-rotate-z-360 group-active:transition-none"
+          />
+        </Button>
+      </div>
     {/snippet}
   </DialogTrigger>
   <DialogContent>
