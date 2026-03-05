@@ -16,23 +16,24 @@
 
   let { chapter, page, lang, isZoomedIn = $bindable() }: Props = $props();
 
+  const preferredZoomLevel = $derived(getPreferredZoomLevel());
+  const zoomLevel = $derived(isZoomedIn ? preferredZoomLevel : 1);
+
   // this stuff was a bit hard not gonna lie, took some time, i hope at least one person cares about it :pray:
   // i mean the final calculations seem pretty clean, but you should also take a look at the kitchen:D
-  let zoomOriginPos = $state<
-    [xNorm: number, yNorm: number, x: number, y: number]
-  >([0, 0, 0, 0]);
-  let scale = $state({ width: 1, height: 1 });
-
   let imgContainer = $state<HTMLDivElement>();
   let imgElement = $state<HTMLImageElement>();
   let lastTap = 0;
-  let dragged = false;
-
-  const zoomLevel = $derived(getPreferredZoomLevel());
+  let zoomOriginPos: [xNorm: number, yNorm: number, x: number, y: number] = [
+    0, 0, 0, 0,
+  ];
+  let isDragging = false;
+  let isDragged = false;
+  let scrollTimeout = 0;
 
   const onClickImage = (event: MouseEvent) => {
     // prevent overlay UI toggle
-    if (dragged) event.stopPropagation();
+    if (isDragged) event.stopPropagation();
 
     const now = Date.now();
     if (now - lastTap < DOUBLE_TAP_THRESHOLD_MS) {
@@ -59,76 +60,76 @@
     if (!isZoomedIn) return;
     if (!imgElement) return;
     if (!imgContainer) return;
+
     const imgRect = imgElement.getBoundingClientRect();
     const containerRect = imgContainer.getBoundingClientRect();
 
-    const normX = (containerRect.width / 2 - imgRect.left) / imgRect.width;
-    const normY = (containerRect.height / 2 - imgRect.top) / imgRect.height;
-    const x = normX * imgRect.width + imgRect.left;
-    const y = normY * imgRect.height + imgRect.top;
+    const xNorm =
+      (containerRect.left + containerRect.width / 2 - imgRect.left) /
+      imgRect.width;
+    const yNorm =
+      (containerRect.top + containerRect.height / 2 - imgRect.top) /
+      imgRect.height;
+    const x = xNorm * imgRect.width + imgRect.left;
+    const y = yNorm * imgRect.height + imgRect.top;
 
-    // don't directly assign to prevent infinite rerenders
-    zoomOriginPos[0] = normX;
-    zoomOriginPos[1] = normY;
-    zoomOriginPos[2] = x;
-    zoomOriginPos[3] = y;
+    zoomOriginPos = [xNorm, yNorm, x, y];
   };
 
   $effect(() => {
-    if (!isZoomedIn) return;
-    if (!imgContainer) return;
-    if (!imgElement) return;
-    if (scale.width === 1 && scale.height === 1) return;
+    const scrollAfterScale = () => {
+      if (!imgContainer) return;
+      if (!imgElement) return;
 
-    const imgRect = imgElement.getBoundingClientRect();
-    imgContainer.scrollBy({
-      left: imgRect.left + zoomOriginPos[0] * imgRect.width - zoomOriginPos[2],
-      top: imgRect.top + zoomOriginPos[1] * imgRect.height - zoomOriginPos[3],
-      behavior: "instant",
-    });
-    recalculateZoomOriginPos();
-  });
+      const imgRect = imgElement.getBoundingClientRect();
 
-  $effect(() => {
-    if (!isZoomedIn) return;
+      imgContainer.scrollLeft +=
+        imgRect.left + zoomOriginPos[0] * imgRect.width - zoomOriginPos[2];
+      imgContainer.scrollTop +=
+        imgRect.top + zoomOriginPos[1] * imgRect.height - zoomOriginPos[3];
+
+      recalculateZoomOriginPos();
+    };
 
     const updateScale = () => {
       if (!imgElement || !imgContainer) return;
+      if (isDragging) return;
 
       const imgRealRatio = imgElement.naturalWidth / imgElement.naturalHeight;
       const containerRatio =
         imgContainer.clientWidth / imgContainer.clientHeight;
 
-      scale = {
-        width: zoomLevel / Math.max(1, containerRatio / imgRealRatio),
-        height: zoomLevel / Math.max(1, imgRealRatio / containerRatio),
-      };
+      imgElement.style.minWidth = `${(zoomLevel / Math.max(1, containerRatio / imgRealRatio)) * 100}%`;
+      imgElement.style.minHeight = `${(zoomLevel / Math.max(1, imgRealRatio / containerRatio)) * 100}%`;
 
-      // it's better without it I think
-      // recalculateZoomOriginPos();
+      scrollAfterScale();
     };
 
     updateScale();
 
     const observer = new ResizeObserver(updateScale);
     observer.observe(imgContainer!);
+
+    imgElement?.addEventListener("load", updateScale);
     return () => {
       observer.disconnect();
+      imgElement?.removeEventListener("load", updateScale);
     };
   });
 
   $effect(() => {
     const gesture = new DragGesture(
       imgContainer!,
-      ({ delta: [dx, dy], tap }) => {
+      ({ delta: [dx, dy], tap, last }) => {
+        if (!imgContainer) return;
+
         // stopPropagation won't work here because of Svelte's event system: https://svelte.dev/docs/svelte/basic-markup#Events-Event-delegation
         // so I have to manually check if dragged, and then handle it in onClickImage above
-        dragged = !tap;
-        imgContainer?.scrollBy({
-          left: -dx,
-          top: -dy,
-          behavior: "instant",
-        });
+        isDragged = !tap;
+        isDragging = !tap && !last;
+
+        imgContainer.scrollLeft -= dx;
+        imgContainer.scrollTop -= dy;
         recalculateZoomOriginPos();
       },
       {
@@ -151,7 +152,12 @@
     bind:this={imgContainer}
     class={cn("flex h-full w-full overflow-auto", isZoomedIn && "cursor-move")}
     onclick={onClickImage}
-    onscrollend={recalculateZoomOriginPos}
+    onscroll={() => {
+      // onScrollEnd is not that supported yet
+      // I found this workaround here, ironic but useful: https://developer.chrome.com/blog/scrollend-a-new-javascript-event
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(recalculateZoomOriginPos, 100);
+    }}
   >
     {#key `chapter-${chapter}-page-${page}-${lang}`}
       <img
@@ -159,8 +165,6 @@
         src={getChapterPageUrl(chapter, page, lang)}
         alt={`Chapter ${chapter} Page ${page}`}
         class="m-auto h-0 min-h-full object-contain"
-        style:min-height={isZoomedIn ? `${scale.height * 100}%` : undefined}
-        style:min-width={isZoomedIn ? `${scale.width * 100}%` : undefined}
         loading="lazy"
         draggable={false}
       />
