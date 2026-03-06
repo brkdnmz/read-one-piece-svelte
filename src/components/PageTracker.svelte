@@ -7,19 +7,20 @@
 
   const searchParams = useSearchParams();
   const { chapter } = $derived(searchParams);
-  const pageCount = $derived(useChapterPageCounQuery(chapter));
+  const pageCount = $derived(
+    useChapterPageCounQuery(chapter, appStore.mangaLanguage),
+  );
 </script>
 
 <div class="flex items-center text-sm">
   <PageSelector
     bind:currentPage={searchParams.page}
-    nPages={pageCount.data?.[appStore.mangaLanguage] ??
-      getMaxPagesForChapter(chapter)}
+    nPages={pageCount.data ?? getMaxPagesForChapter(chapter)}
   />
   <span class="transition">
     /<span class="inline-block w-[2ch]">
       {#if pageCount.data}
-        {pageCount.data[appStore.mangaLanguage]}
+        {pageCount.data}
       {:else}
         <span class="animate-pulse text-slate-400">...</span>
       {/if}

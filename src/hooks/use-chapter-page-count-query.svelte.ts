@@ -1,23 +1,23 @@
-import { createQuery } from "@tanstack/svelte-query";
+import { createQuery, useQueryClient } from "@tanstack/svelte-query";
 import { getChapterPageCount } from "../api/api";
 import { MangaLanguage } from "../types";
 
-export function useChapterPageCounQuery(chapter: number) {
+export function useChapterPageCounQuery(chapter: number, lang: MangaLanguage) {
+  const queryClient = useQueryClient();
+
+  $effect(() => {
+    Object.values(MangaLanguage).forEach((lang) => {
+      queryClient.prefetchQuery({
+        queryKey: ["chapter-page-count", chapter, lang],
+        queryFn: async () => getChapterPageCount(chapter, lang),
+        staleTime: Infinity,
+      });
+    });
+  });
+
   return createQuery(() => ({
-    queryKey: ["chapter-page-count", chapter],
-    queryFn: async () => {
-      const counts: Record<MangaLanguage, number> = {
-        [MangaLanguage.EN]: await getChapterPageCount(
-          chapter,
-          MangaLanguage.EN,
-        ),
-        [MangaLanguage.TR]: await getChapterPageCount(
-          chapter,
-          MangaLanguage.TR,
-        ),
-      };
-      return counts;
-    },
+    queryKey: ["chapter-page-count", chapter, lang],
+    queryFn: async () => getChapterPageCount(chapter, lang),
     staleTime: Infinity,
   }));
 }
