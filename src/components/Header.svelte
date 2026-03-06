@@ -1,6 +1,6 @@
 <script lang="ts">
   import LogoRightPart from "$lib/assets/one-piece-logo.webp";
-  import LogoLeftPart from "$lib/assets/read-one-piece-font.png";
+  import LogoLeftPart from "$lib/assets/read-one-piece-font.webp";
 
   const SIZE = 40;
 </script>

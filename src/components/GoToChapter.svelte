@@ -1,5 +1,5 @@
 <script lang="ts">
-  import OnePieceGun from "$lib/assets/one-piece-gun.png";
+  import OnePieceGun from "$lib/assets/one-piece-gun.webp";
   import { Button } from "$lib/components/ui/button";
   import {
     Dialog,

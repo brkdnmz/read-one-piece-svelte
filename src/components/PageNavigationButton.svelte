@@ -1,5 +1,5 @@
 <script lang="ts">
-  import OnePieceGun from "$lib/assets/one-piece-gun.png";
+  import OnePieceGun from "$lib/assets/one-piece-gun.webp";
   import { cn } from "$lib/utils";
   import type { HTMLButtonAttributes } from "svelte/elements";
   import { fly } from "svelte/transition";
