@@ -51,7 +51,7 @@
     {#snippet child({ props })}
       <Button
         {...props}
-        class="absolute inset-x-0 top-full mt-1 h-fit py-1 text-center text-xs italic"
+        class="absolute -inset-x-1 top-full mt-1 h-fit py-1 text-center text-xs italic"
         variant="secondary"
         size="xs"
       >

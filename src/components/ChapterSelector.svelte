@@ -35,7 +35,7 @@
       searchParams.chapter = selectedChapter;
       searchParams.page = 1;
     }}
-    class="w-15 px-2 py-0 text-center text-transparent transition-[background-color,border-color]!"
+    class="w-fit px-2 py-0 text-center text-transparent transition-[background-color,border-color]!"
     showArrow={false}
   >
     {#each options as { label, value } (value)}
