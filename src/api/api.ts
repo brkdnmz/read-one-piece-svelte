@@ -45,7 +45,7 @@ export async function getChapterPageCount(
   }
 
   let l = 1;
-  let r = MAX_PAGES_PER_CHAPTER;
+  let r = chapter === 1 ? FIRST_CHAPTER_PAGES : MAX_PAGES_PER_CHAPTER;
 
   while (l < r) {
     const mid = Math.floor((l + r + 1) / 2);
