@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LuffyRunningAnimation from "$lib/assets/luffy-running-animation.webp";
   import { cn } from "$lib/utils";
   import { DragGesture } from "@use-gesture/vanilla";
   import { isMobile } from "mobile-device-detect";
@@ -23,6 +24,7 @@
   // i mean the final calculations seem pretty clean, but you should also take a look at the kitchen:D
   let imgContainer = $state<HTMLDivElement>();
   let imgElement = $state<HTMLImageElement>();
+  let imgLoaded = $state(false);
   let lastTap = 0;
   let zoomOriginPos: [xNorm: number, yNorm: number, x: number, y: number] = [
     0, 0, 0, 0,
@@ -150,7 +152,10 @@
   <!-- onscrollend over onscroll for better performance -->
   <div
     bind:this={imgContainer}
-    class={cn("flex h-full w-full overflow-auto", isZoomedIn && "cursor-move")}
+    class={cn(
+      "relative flex h-full w-full overflow-auto",
+      isZoomedIn && "cursor-move",
+    )}
     onclick={onClickImage}
     onscroll={() => {
       // onScrollEnd is not that supported yet
@@ -167,7 +172,18 @@
         class="m-auto h-0 min-h-full object-contain"
         loading="lazy"
         draggable={false}
+        onload={() => (imgLoaded = true)}
+        onerror={() => (imgLoaded = true)}
       />
     {/key}
+
+    {#if !imgLoaded}
+      <!-- https://custom-progressbar.com/ru/collection/one-piece/onepiece-monkey-d-luffy-run -->
+      <img
+        src={LuffyRunningAnimation}
+        alt="Loading..."
+        class="absolute top-1/2 left-1/2 h-16 -translate-1/2"
+      />
+    {/if}
   </div>
 </div>
