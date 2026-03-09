@@ -121,6 +121,7 @@
     chapter;
     pageCount;
     currentPage;
+    lang;
 
     swiperEl.querySelectorAll("swiper-slide").forEach((slideEl) => {
       const imgEl = slideEl.querySelector("img");
