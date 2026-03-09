@@ -164,7 +164,9 @@
 
   <!-- Swiper Element doesn't update virtual slides on props change, I checked the code -->
   <!-- So, I have to change the key to force remount -->
-  {#key `${chapter}-${pageCount}`}
+  {#key `${chapter}-${pageCount}-${appStore.orientation}`}
+    <!-- About slidesPerView="auto": https://github.com/nolimits4web/swiper/issues/7473 -->
+    <!-- I didn't use it anyway, because virtual doesn't work properly with it -->
     <swiper-container
       bind:this={swiperEl}
       initialSlide={currentPage - 1}
@@ -182,13 +184,20 @@
     }
     `,
       ]}
-      class="h-full transition peer-hover/next:-translate-x-2 peer-hover/prev:translate-x-2"
+      class={cn(
+        "h-full transition",
+        appStore.orientation === "horizontal"
+          ? "peer-hover/next:-translate-x-2 peer-hover/prev:translate-x-2"
+          : "peer-hover/next:-translate-y-2 peer-hover/prev:translate-y-2",
+      )}
       onswiperslidechange={onSlideChange}
       onswipertransitionend={onTransitionEnd}
+      direction={appStore.orientation}
     >
       {#each { length: pageCount } as _, pageIndex (pageIndex)}
         <!-- Lazy + virtual causes a silly bug (preloader gets stuck) -->
-        <swiper-slide lazy={false}>
+        <!-- Must add "h-full!", otherwise something goes really wrong in vertical orientation -->
+        <swiper-slide lazy={false} class="h-full!">
           <ChapterPage
             {chapter}
             page={pageIndex + 1}

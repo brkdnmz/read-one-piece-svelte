@@ -20,9 +20,14 @@
   import FieldSeparator from "$lib/components/ui/field/field-separator.svelte";
   import { NativeSelect } from "$lib/components/ui/native-select";
   import { preferencesStore } from "../store/preferences.svelte";
+  import { appStore } from "../store/store.svelte";
   import { MangaLanguage } from "../types";
 
   const uid = $props.id();
+
+  $effect(() => {
+    appStore.orientation = preferencesStore.current.preferredOrientation;
+  });
 </script>
 
 <Dialog>
@@ -45,7 +50,10 @@
       </div>
     {/snippet}
   </DialogTrigger>
-  <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+  <DialogContent
+    onOpenAutoFocus={(e) => e.preventDefault()}
+    class="max-h-full overflow-auto"
+  >
     <DialogHeader>
       <DialogTitle class="text-center font-[Anime_Ace]">Settings</DialogTitle>
     </DialogHeader>
@@ -64,6 +72,15 @@
             One Piece defaults to this language on your further visits.
             Currently selected language won't be affected.
           </FieldDescription>
+        </Field>
+        <Field>
+          <FieldLabel>Preferred orientation</FieldLabel>
+          <NativeSelect
+            bind:value={preferencesStore.current.preferredOrientation}
+          >
+            <option value="horizontal">Horizontal</option>
+            <option value="vertical">Vertical</option>
+          </NativeSelect>
         </Field>
         <FieldSeparator />
         <Field orientation="horizontal">

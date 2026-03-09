@@ -3,6 +3,7 @@
   import { cn } from "$lib/utils";
   import type { HTMLButtonAttributes } from "svelte/elements";
   import { fly } from "svelte/transition";
+  import { appStore } from "../store/store.svelte";
 
   type Props = HTMLButtonAttributes & {
     direction: "prev" | "next";
@@ -26,7 +27,11 @@
   >
     <img
       src={OnePieceGun}
-      class={cn("w-14 p-2", direction === "next" && "rotate-y-180")}
+      class={cn(
+        "w-14 p-2 transition",
+        appStore.orientation === "vertical" && "rotate-90",
+        direction === "next" && "rotate-y-180",
+      )}
       alt="Slide {direction}"
     />
   </div>

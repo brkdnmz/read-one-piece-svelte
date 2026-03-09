@@ -89,6 +89,10 @@
                 <Kbd>←</Kbd>
                 <Kbd>→</Kbd>
               </KbdGroup>
+              (<KbdGroup>
+                <Kbd>↑</Kbd>
+                <Kbd>↓</Kbd>
+              </KbdGroup> in vertical mode)
             </li>
           </ul>
         </li>
