@@ -79,12 +79,12 @@
           To navigate pages:
           <ul>
             <li>
-              Swipe left/right{" "}
+              Swipe left/right
               <IwwaSwipe class="inline size-4 stroke-muted-foreground" />
             </li>
             <li>Press the buttons on both sides</li>
             <li>
-              Press the arrow keys{" "}
+              Press the arrow keys
               <KbdGroup>
                 <Kbd>←</Kbd>
                 <Kbd>→</Kbd>
