@@ -46,7 +46,7 @@
       </Button>
     {/snippet}
   </DialogTrigger>
-  <DialogContent showCloseButton={false}>
+  <DialogContent>
     <DialogHeader>
       <DialogTitle class="text-center font-[Anime_Ace]">About</DialogTitle>
       <DialogDescription class="italic">
@@ -60,53 +60,51 @@
       </DialogDescription>
     </DialogHeader>
 
-    <div class="max-h-[50vh] overflow-auto">
-      <img
-        src={RobinChopper}
-        alt="Robin Chopper"
-        class="m-auto mb-1 h-40 rounded-lg"
-      />
+    <img
+      src={RobinChopper}
+      alt="Robin Chopper"
+      class="m-auto mb-1 h-40 rounded-lg"
+    />
 
-      <ul class="text-sm">
-        <li>
-          Press on the manga page to toggle the overlay UI. <span
-            class="text-muted-foreground italic"
-            >(The interaction is a bit delayed because of the double tap
-            interaction.)</span
-          >
-        </li>
-        <li>
-          To navigate pages:
-          <ul>
-            <li>
-              Swipe left/right
-              <IwwaSwipe class="inline size-4 stroke-muted-foreground" />
-            </li>
-            <li>Press the buttons on both sides</li>
-            <li>
-              Press the arrow keys
-              <KbdGroup>
-                <Kbd>←</Kbd>
-                <Kbd>→</Kbd>
-              </KbdGroup>
-              (<KbdGroup>
-                <Kbd>↑</Kbd>
-                <Kbd>↓</Kbd>
-              </KbdGroup> in vertical mode)
-            </li>
-          </ul>
-        </li>
-        <li>The top bar explains itself enough:)</li>
-        <li>
-          Double tap to toggle zoom. Swipe navigation is disabled when zoomed
-          in; an indicator will appear on the top right corner.
-        </li>
-        <li>
-          Press the icon on the bottom right corner or <Kbd>F</Kbd> to toggle full
-          screen. You can also press <Kbd>Esc</Kbd> to exit full screen.
-        </li>
-      </ul>
-    </div>
+    <ul class="text-sm">
+      <li>
+        Press on the manga page to toggle the overlay UI. <span
+          class="text-muted-foreground italic"
+          >(The interaction is a bit delayed because of the double tap
+          interaction.)</span
+        >
+      </li>
+      <li>
+        To navigate pages:
+        <ul>
+          <li>
+            Swipe left/right
+            <IwwaSwipe class="inline size-4 stroke-muted-foreground" />
+          </li>
+          <li>Press the buttons on both sides</li>
+          <li>
+            Press the arrow keys
+            <KbdGroup>
+              <Kbd>←</Kbd>
+              <Kbd>→</Kbd>
+            </KbdGroup>
+            (<KbdGroup>
+              <Kbd>↑</Kbd>
+              <Kbd>↓</Kbd>
+            </KbdGroup> in vertical mode)
+          </li>
+        </ul>
+      </li>
+      <li>The top bar explains itself enough:)</li>
+      <li>
+        Double tap to toggle zoom. Swipe navigation is disabled when zoomed in;
+        an indicator will appear on the top right corner.
+      </li>
+      <li>
+        Press the icon on the bottom right corner or <Kbd>F</Kbd> to toggle full screen.
+        You can also press <Kbd>Esc</Kbd> to exit full screen.
+      </li>
+    </ul>
 
     <DialogFooter>
       <DialogClose>

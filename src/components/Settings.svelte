@@ -50,56 +50,51 @@
       </div>
     {/snippet}
   </DialogTrigger>
-  <DialogContent
-    onOpenAutoFocus={(e) => e.preventDefault()}
-    class="max-h-full overflow-auto"
-  >
+  <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
     <DialogHeader>
       <DialogTitle class="text-center font-[Anime_Ace]">Settings</DialogTitle>
     </DialogHeader>
 
-    <div>
-      <FieldGroup>
-        <Field>
-          <FieldLabel>Preferred manga language</FieldLabel>
-          <NativeSelect
-            bind:value={preferencesStore.current.preferredMangaLanguage}
-          >
-            <option value={MangaLanguage.EN}>🇺🇸 English</option>
-            <option value={MangaLanguage.TR}>🇹🇷 Türkçe</option>
-          </NativeSelect>
-          <FieldDescription>
-            One Piece defaults to this language on your further visits.
-            Currently selected language won't be affected.
-          </FieldDescription>
-        </Field>
-        <Field>
-          <FieldLabel>Preferred orientation</FieldLabel>
-          <NativeSelect
-            bind:value={preferencesStore.current.preferredOrientation}
-          >
-            <option value="horizontal">Horizontal</option>
-            <option value="vertical">Vertical</option>
-          </NativeSelect>
-        </Field>
-        <FieldSeparator />
-        <Field orientation="horizontal">
-          <Checkbox
-            id="{uid}-use-fullscreen-api"
-            bind:checked={preferencesStore.current.useFullscreenApi}
-            disabled={!document.fullscreenEnabled}
-          />
-          <FieldLabel for="{uid}-use-fullscreen-api" class="block">
-            Enable browser's full screen mode
-            {#if !document.fullscreenEnabled}
-              <div class="text-muted-foreground italic">
-                (Not supported in your browser)
-              </div>
-            {/if}
-          </FieldLabel>
-        </Field>
-      </FieldGroup>
-    </div>
+    <FieldGroup>
+      <Field>
+        <FieldLabel>Preferred manga language</FieldLabel>
+        <NativeSelect
+          bind:value={preferencesStore.current.preferredMangaLanguage}
+        >
+          <option value={MangaLanguage.EN}>🇺🇸 English</option>
+          <option value={MangaLanguage.TR}>🇹🇷 Türkçe</option>
+        </NativeSelect>
+        <FieldDescription>
+          One Piece defaults to this language on your further visits. Currently
+          selected language won't be affected.
+        </FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel>Preferred orientation</FieldLabel>
+        <NativeSelect
+          bind:value={preferencesStore.current.preferredOrientation}
+        >
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+        </NativeSelect>
+      </Field>
+      <FieldSeparator />
+      <Field orientation="horizontal">
+        <Checkbox
+          id="{uid}-use-fullscreen-api"
+          bind:checked={preferencesStore.current.useFullscreenApi}
+          disabled={!document.fullscreenEnabled}
+        />
+        <FieldLabel for="{uid}-use-fullscreen-api" class="block">
+          Enable browser's full screen mode
+          {#if !document.fullscreenEnabled}
+            <div class="text-muted-foreground italic">
+              (Not supported in your browser)
+            </div>
+          {/if}
+        </FieldLabel>
+      </Field>
+    </FieldGroup>
 
     <DialogFooter>
       <DialogClose>
