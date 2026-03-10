@@ -79,7 +79,8 @@
         <ul>
           <li>
             Swipe left/right
-            <IwwaSwipe class="inline size-4 stroke-muted-foreground" />
+            <IwwaSwipe class="inline size-4 stroke-muted-foreground" /> (up/down in
+            vertical mode)
           </li>
           <li>Press the buttons on both sides</li>
           <li>
