@@ -63,7 +63,7 @@
     <img
       src={RobinChopper}
       alt="Robin Chopper"
-      class="m-auto mb-1 h-40 rounded-lg"
+      class="m-auto h-40 rounded-lg"
     />
 
     <ul class="text-sm">
