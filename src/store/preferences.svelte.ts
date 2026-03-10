@@ -11,7 +11,7 @@ export const preferencesStore = new PersistedState<PreferencesStore>(
   "preferences",
   {
     preferredMangaLanguage: MangaLanguage.EN,
-    preferredOrientation: "vertical",
+    preferredOrientation: "horizontal",
     useFullscreenApi: false,
   },
 );
