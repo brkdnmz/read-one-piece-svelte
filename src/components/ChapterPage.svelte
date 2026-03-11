@@ -1,21 +1,27 @@
 <script lang="ts">
-  import LuffyRunningAnimation from "$lib/assets/luffy-running-animation.webp";
   import { cn } from "$lib/utils";
   import { DragGesture } from "@use-gesture/vanilla";
   import { isMobile } from "mobile-device-detect";
-  import { getChapterPageUrl } from "../api/util";
   import { DOUBLE_TAP_THRESHOLD_MS } from "../constants";
   import { getPreferredZoomLevel } from "../store/store.svelte";
   import type { MangaLanguage } from "../types";
+  import ChapterPageImage from "./ChapterPageImage.svelte";
 
   type Props = {
     chapter: number;
     page: number;
     lang: MangaLanguage;
+    isColored?: boolean;
     isZoomedIn?: boolean;
   };
 
-  let { chapter, page, lang, isZoomedIn = $bindable() }: Props = $props();
+  let {
+    chapter,
+    page,
+    lang,
+    isColored,
+    isZoomedIn = $bindable(),
+  }: Props = $props();
 
   const preferredZoomLevel = $derived(getPreferredZoomLevel());
   const zoomLevel = $derived(isZoomedIn ? preferredZoomLevel : 1);
@@ -24,7 +30,6 @@
   // i mean the final calculations seem pretty clean, but you should also take a look at the kitchen:D
   let imgContainer = $state<HTMLDivElement>();
   let imgElement = $state<HTMLImageElement>();
-  let imgLoaded = $state(false);
   let lastTap = 0;
   let zoomOriginPos: [xNorm: number, yNorm: number, x: number, y: number] = [
     0, 0, 0, 0,
@@ -164,26 +169,14 @@
       scrollTimeout = window.setTimeout(recalculateZoomOriginPos, 100);
     }}
   >
-    {#key `chapter-${chapter}-page-${page}-${lang}`}
-      <img
-        bind:this={imgElement}
-        src={getChapterPageUrl(chapter, page, lang)}
-        alt={`Chapter ${chapter} Page ${page}`}
-        class="m-auto h-0 min-h-full object-contain"
-        loading="lazy"
-        draggable={false}
-        onload={() => (imgLoaded = true)}
-        onerror={() => (imgLoaded = true)}
+    {#key `chapter-${chapter}-page-${page}-${lang}-${isColored ? "color" : "bw"}`}
+      <ChapterPageImage
+        bind:ref={imgElement}
+        {chapter}
+        {page}
+        {lang}
+        {isColored}
       />
     {/key}
-
-    {#if !imgLoaded}
-      <!-- https://custom-progressbar.com/ru/collection/one-piece/onepiece-monkey-d-luffy-run -->
-      <img
-        src={LuffyRunningAnimation}
-        alt="Loading..."
-        class="absolute top-1/2 left-1/2 h-16 -translate-1/2"
-      />
-    {/if}
   </div>
 </div>

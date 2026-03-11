@@ -15,7 +15,7 @@
 >
   <span
     class={cn(
-      "icon-[solar--posts-carousel-horizontal-line-duotone] size-1/2 transition",
+      "icon-[solar--posts-carousel-horizontal-line-duotone] size-1/2 transition-[background-color,transform]",
       appStore.orientation === "vertical" && "rotate-z-90",
     )}
   ></span>

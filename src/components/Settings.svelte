@@ -25,8 +25,14 @@
 
   const uid = $props.id();
 
+  // These effects run whenever preferencesStore changes (instead of only specified properties)
+  // due to the library's implementation, but I'll left them as they are for now
   $effect(() => {
     appStore.orientation = preferencesStore.current.preferredOrientation;
+  });
+
+  $effect(() => {
+    appStore.isColored = preferencesStore.current.isColoredPreferred;
   });
 </script>
 
@@ -76,6 +82,13 @@
         >
           <option value="horizontal">Horizontal</option>
           <option value="vertical">Vertical</option>
+        </NativeSelect>
+      </Field>
+      <Field>
+        <FieldLabel>Preferred manga color</FieldLabel>
+        <NativeSelect bind:value={preferencesStore.current.isColoredPreferred}>
+          <option value={false}>Black & white</option>
+          <option value={true}>Colored</option>
         </NativeSelect>
       </Field>
       <FieldSeparator />

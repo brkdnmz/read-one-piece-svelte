@@ -4,6 +4,7 @@
   import About from "./About.svelte";
   import ChapterNavigationButton from "./ChapterNavigationButton.svelte";
   import ChapterSelector from "./ChapterSelector.svelte";
+  import ColoredSwitcher from "./ColoredSwitcher.svelte";
   import LangSwitcher from "./LangSwitcher.svelte";
   import OrientationSwitcher from "./OrientationSwitcher.svelte";
   import PageTracker from "./PageTracker.svelte";
@@ -38,6 +39,7 @@
 
   <div class="flex items-center gap-1">
     <ThemeSwitcher />
+    <ColoredSwitcher />
     <LangSwitcher />
     <OrientationSwitcher />
     <About />

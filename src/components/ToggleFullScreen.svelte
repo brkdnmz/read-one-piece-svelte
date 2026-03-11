@@ -24,13 +24,13 @@
       <div class="relative">
         <span
           class={cn(
-            "absolute inset-0 icon-[bi--fullscreen] size-full transition duration-200",
+            "absolute inset-0 icon-[bi--fullscreen] size-full transition-opacity duration-200",
             appStore.isFullScreen && "opacity-0",
           )}
         ></span>
         <span
           class={cn(
-            "absolute inset-0 icon-[bi--fullscreen-exit] size-full transition duration-200",
+            "absolute inset-0 icon-[bi--fullscreen-exit] size-full transition-opacity duration-200",
             !appStore.isFullScreen && "opacity-0",
           )}
         ></span>

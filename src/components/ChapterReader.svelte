@@ -204,6 +204,7 @@
             page={pageIndex + 1}
             {lang}
             bind:isZoomedIn={isPageZoomedIn[pageIndex]}
+            isColored={appStore.isColored}
           />
         </swiper-slide>
       {/each}

@@ -4,6 +4,7 @@ import { MangaLanguage, type Orientation } from "../types";
 type PreferencesStore = {
   preferredMangaLanguage: MangaLanguage;
   preferredOrientation: Orientation;
+  isColoredPreferred: boolean;
   useFullscreenApi: boolean;
 };
 
@@ -12,6 +13,7 @@ export const preferencesStore = new PersistedState<PreferencesStore>(
   {
     preferredMangaLanguage: MangaLanguage.EN,
     preferredOrientation: "horizontal",
+    isColoredPreferred: false,
     useFullscreenApi: false,
   },
 );
