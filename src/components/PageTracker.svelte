@@ -8,7 +8,11 @@
   const searchParams = useSearchParams();
   const { chapter } = $derived(searchParams);
   const pageCount = $derived(
-    useChapterPageCounQuery(chapter, appStore.mangaLanguage),
+    useChapterPageCounQuery(
+      chapter,
+      appStore.mangaLanguage,
+      appStore.isColored,
+    ),
   );
 </script>
 

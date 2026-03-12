@@ -32,7 +32,9 @@
   }: Props = $props();
 
   let swiperEl = $state<SwiperContainer>(); // should have been a state all this time
-  const pageCountQuery = $derived(useChapterPageCounQuery(chapter, lang));
+  const pageCountQuery = $derived(
+    useChapterPageCounQuery(chapter, lang, appStore.isColored),
+  );
   const canSwipe = useCanSwipe();
 
   const pageCount = $derived(
