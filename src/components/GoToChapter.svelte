@@ -21,7 +21,7 @@
   const searchParams = useSearchParams();
   const chapterCount = useChapterCount();
   let isDialogOpen = $state(false);
-  let newChapterInput = $state(searchParams.chapter.toString());
+  let newChapterInput = $state("");
 
   $effect(() => {
     newChapterInput = newChapterInput.replace(/\s/g, "");
@@ -43,7 +43,7 @@
 <Dialog
   open={isDialogOpen}
   onOpenChange={(open) => {
-    newChapterInput = searchParams.chapter.toString();
+    newChapterInput = "";
     isDialogOpen = open;
   }}
 >
