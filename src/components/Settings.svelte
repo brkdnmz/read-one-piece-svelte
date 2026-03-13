@@ -1,5 +1,5 @@
 <script>
-  import ShipWheel from "$lib/assets/ship-wheel.png";
+  import ShipWheel from "$lib/assets/ship-wheel.webp";
   import { Button } from "$lib/components/ui/button";
   import { Checkbox } from "$lib/components/ui/checkbox";
   import {

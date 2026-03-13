@@ -1,5 +1,5 @@
 <script>
-  import FrankySuper from "$lib/assets/franky-super.png";
+  import FrankySuper from "$lib/assets/franky-super.webp";
   import RobinChopper from "$lib/assets/robin-chopper.webp";
   import ThousandSunny from "$lib/assets/thousand-sunny.webp";
   import { Button } from "$lib/components/ui/button";
