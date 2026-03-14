@@ -60,7 +60,7 @@
     {/snippet}
   </DialogTrigger>
   <DialogContent aria-describedby={undefined}>
-    <DialogTitle>Go to...</DialogTitle>
+    <DialogTitle class="text-center font-manga">Go to...</DialogTitle>
     <form onsubmit={onSubmit}>
       <Field>
         <FieldLabel for="new-chapter-input">
