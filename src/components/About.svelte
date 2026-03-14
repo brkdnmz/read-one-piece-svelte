@@ -48,9 +48,9 @@
   </DialogTrigger>
   <DialogContent>
     <DialogHeader>
-      <DialogTitle class="text-center font-[Anime_Ace]">About</DialogTitle>
+      <DialogTitle class="text-center font-manga">About</DialogTitle>
       <DialogDescription class="italic">
-        Hope you have <span class="font-[Anime_Ace]">SUUUUPER</span>
+        Hope you have <span class="font-manga">SUUUUPER</span>
         <img
           src={FrankySuper}
           alt="Franky Super Pose"
@@ -110,7 +110,7 @@
     <DialogFooter>
       <DialogClose>
         {#snippet child({ props })}
-          <Button {...props} class="font-[Anime_Ace] font-bold">Gotcha!</Button>
+          <Button {...props} class="font-manga font-bold">Gotcha!</Button>
         {/snippet}
       </DialogClose>
     </DialogFooter>

@@ -58,7 +58,7 @@
   </DialogTrigger>
   <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
     <DialogHeader>
-      <DialogTitle class="text-center font-[Anime_Ace]">Settings</DialogTitle>
+      <DialogTitle class="text-center font-manga">Settings</DialogTitle>
     </DialogHeader>
 
     <FieldGroup>
@@ -112,7 +112,7 @@
     <DialogFooter>
       <DialogClose>
         {#snippet child({ props })}
-          <Button {...props} class="font-[Anime_Ace] text-2xs font-bold">
+          <Button {...props} class="font-manga text-2xs font-bold">
             I'm done!
           </Button>
         {/snippet}

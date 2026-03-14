@@ -13,7 +13,7 @@
 
 <!-- pb-5 for "Go to..." button -->
 <div
-  class="flex flex-wrap-reverse items-stretch justify-center gap-x-2 gap-y-1 pb-5 font-[One_Piece] select-none"
+  class="flex flex-wrap-reverse items-stretch justify-center gap-x-2 gap-y-1 pb-5 font-one-piece select-none"
 >
   <div class="flex items-stretch justify-center gap-2">
     <div class="flex items-center gap-1">

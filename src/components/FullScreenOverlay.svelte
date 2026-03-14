@@ -9,7 +9,7 @@
 
 <!-- bottom-2.5 - (bottom padding) = bottom-2 -->
 <div
-  class="absolute bottom-2 left-1/2 z-100 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-background/50 px-1 py-0.5 font-[One_Piece] text-sm"
+  class="absolute bottom-2 left-1/2 z-100 flex -translate-x-1/2 items-center gap-2 rounded-lg bg-background/50 px-1 py-0.5 font-one-piece text-sm"
   transition:fly={{ y: "100%" }}
 >
   <div class="flex items-center gap-1">
